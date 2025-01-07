@@ -1,17 +1,20 @@
-import { useState } from "react";
-import Item from "./Item";
-import OrderModal from "./OrderModal";
+import { useState } from 'react';
+import Item from './Item';
+import OrderModal from './OrderModal';
+import { useMenu } from '../context/menuContext';
 
-function Menu({ menu, cart, setCart }) {
-  const [modalOn, setModalOn] = useState(false);
-  const [modalMenu, setModalMenu] = useState(null);
+function Menu() {
+  const { menu } = useMenu();
+
   if (!menu)
     return (
-      <div style={{ textAlign: "center", margin: "80px" }}>
+      <div style={{ textAlign: 'center', margin: '80px' }}>
         메뉴 정보가 없어요!
       </div>
     );
 
+  const [modalOn, setModalOn] = useState(false);
+  const [modalMenu, setModalMenu] = useState(null);
   const categorys = Object.keys(menu);
   return (
     <>
@@ -19,7 +22,7 @@ function Menu({ menu, cart, setCart }) {
         return (
           <section key={category}>
             <h2>{category}</h2>
-            <ul className="menu">
+            <ul className='menu'>
               {menu[category].map((item) => (
                 <Item
                   key={item.name}
@@ -35,12 +38,7 @@ function Menu({ menu, cart, setCart }) {
         );
       })}
       {modalOn ? (
-        <OrderModal
-          modalMenu={modalMenu}
-          setModalOn={setModalOn}
-          cart={cart}
-          setCart={setCart}
-        />
+        <OrderModal modalMenu={modalMenu} setModalOn={setModalOn} />
       ) : null}
     </>
   );
